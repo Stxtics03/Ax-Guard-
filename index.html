@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AxGuard - Smart Water System</title>
-    <link rel="stylesheet" href="./css/styles.css" />
     <style>
       body {
         margin: 0;
@@ -25,13 +24,17 @@
       .logo {
         display: flex;
         align-items: center;
-        font-size: 1.4rem;
-        font-weight: bold;
+        gap: 10px;
       }
 
       .logo img {
-        height: 32px;
-        margin-right: 10px;
+        height: 40px; /* Normal size logo */
+        width: auto;
+      }
+
+      .logo-text {
+        font-size: 1.4rem;
+        font-weight: bold;
       }
 
       nav a {
@@ -67,7 +70,7 @@
         width: 100vw;
         height: 100vh;
         background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                          linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+                        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
         background-size: 40px 40px;
         z-index: 0;
       }
@@ -91,17 +94,12 @@
         margin: 0 auto 30px;
       }
 
-      /* Minimal Launching Soon banner - EXACTLY like your image */
       .launch-banner {
         text-align: center;
         color: #fff;
         font-family: monospace;
         font-size: 1rem;
-        letter-spacing: 0;
         margin: 20px 0 0 0;
-        padding: 0;
-        position: relative;
-        z-index: 2;
       }
     </style>
   </head>
@@ -109,8 +107,8 @@
     <div class="grid-bg"></div>
     <header>
       <div class="logo">
-        <img src="/logo.png" alt="AxGuard Logo" />
-        AxGuard
+        <img src="AXG.png" alt="AxGuard Logo" />
+        <span class="logo-text">AxGuard</span> <!-- Single instance of AxGuard text -->
       </div>
       <nav>
         <a href="#how">How It Works</a>
@@ -120,7 +118,6 @@
       </nav>
     </header>
 
-    <!-- EXACT Launching Soon text from your image -->
     <div class="launch-banner"># Launching Soon</div>
 
     <div class="content">
@@ -131,7 +128,6 @@
 
     <script>
       function goToLogin() {
-        // Check if already logged in from localStorage/session or JWT cookie
         const token = localStorage.getItem("user-token");
         if (token) {
           window.location.href = "/dashboard.html";
@@ -139,23 +135,6 @@
           window.location.href = "/login.html";
         }
       }
-
-      // Simple typewriter effect for the banner
-      document.addEventListener('DOMContentLoaded', function() {
-        const banner = document.querySelector('.launch-banner');
-        const text = banner.textContent;
-        banner.textContent = '';
-        
-        let i = 0;
-        const typing = setInterval(() => {
-          if (i < text.length) {
-            banner.textContent += text.charAt(i);
-            i++;
-          } else {
-            clearInterval(typing);
-          }
-        }, 100);
-      });
     </script>
   </body>
 </html>
