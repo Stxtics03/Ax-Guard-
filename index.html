@@ -28,7 +28,7 @@
       }
 
       .logo img {
-        height: 40px; /* Normal size logo */
+        height: 30px;
         width: auto;
       }
 
@@ -94,12 +94,27 @@
         margin: 0 auto 30px;
       }
 
+      /* Launching Soon Banner with Animation */
       .launch-banner {
         text-align: center;
         color: #fff;
         font-family: monospace;
         font-size: 1rem;
         margin: 20px 0 0 0;
+        height: 20px; /* Fixed height to prevent layout shift */
+        overflow: hidden;
+      }
+      
+      #typewriter {
+        display: inline-block;
+        border-right: 2px solid #fff; /* Cursor effect */
+        padding-right: 3px;
+        animation: blink 0.7s infinite;
+      }
+      
+      @keyframes blink {
+        0%, 100% { border-color: transparent; }
+        50% { border-color: #fff; }
       }
     </style>
   </head>
@@ -107,8 +122,8 @@
     <div class="grid-bg"></div>
     <header>
       <div class="logo">
-        <img src="AXG.png" alt="AxGuard Logo" />
-        <span class="logo-text">AxGuard</span> <!-- Single instance of AxGuard text -->
+        <img src="images/logo.png" alt="AxGuard Logo" />
+        <span class="logo-text">AxGuard</span>
       </div>
       <nav>
         <a href="#how">How It Works</a>
@@ -118,7 +133,10 @@
       </nav>
     </header>
 
-    <div class="launch-banner"># Launching Soon</div>
+    <!-- Animated Launch Banner -->
+    <div class="launch-banner">
+      <span id="typewriter"></span>
+    </div>
 
     <div class="content">
       <h1>Welcome to AxGuard</h1>
@@ -127,6 +145,7 @@
     </div>
 
     <script>
+      // Login function
       function goToLogin() {
         const token = localStorage.getItem("user-token");
         if (token) {
@@ -135,6 +154,26 @@
           window.location.href = "/login.html";
         }
       }
+
+      // Typewriter animation
+      const text = "# Launching Soon";
+      let i = 0;
+      const typewriter = document.getElementById("typewriter");
+      
+      function type() {
+        if (i < text.length) {
+          typewriter.textContent += text.charAt(i);
+          i++;
+          setTimeout(type, 100); // Typing speed (ms)
+        } else {
+          // Blinking cursor stays after completion
+        }
+      }
+      
+      // Start animation when page loads
+      document.addEventListener("DOMContentLoaded", function() {
+        setTimeout(type, 500); // Small delay before starting
+      });
     </script>
   </body>
 </html>
