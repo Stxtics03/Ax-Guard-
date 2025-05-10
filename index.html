@@ -4,104 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AxGuard - Smart Water System</title>
-    <link rel="stylesheet" href="./css/styles.css" />
     <style>
-      body {
-        margin: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #0d0d0d;
-        color: #fff;
-        overflow: hidden;
-      }
-
-      header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 20px 40px;
-        background-color: #111;
-      }
-
-      .logo {
-        display: flex;
-        align-items: center;
-        font-size: 1.4rem;
-        font-weight: bold;
-      }
-
-      .logo img {
-        height: 32px;
-        margin-right: 10px;
-      }
-
-      nav a {
-        color: #ccc;
-        margin-left: 30px;
-        text-decoration: none;
-        transition: color 0.3s;
-      }
-
-      nav a:hover {
-        color: #fff;
-      }
-
-      .btn-enter {
-        background-color: #2563eb;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-      }
-
-      .btn-enter:hover {
-        background-color: #1d4ed8;
-      }
-
-      .grid-bg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                          linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-        background-size: 40px 40px;
-        z-index: 0;
-      }
-
-      .content {
-        position: relative;
-        z-index: 1;
-        text-align: center;
-        margin-top: 120px;
-      }
-
-      .content h1 {
-        font-size: 3rem;
-        margin-bottom: 20px;
-      }
-
-      .content p {
-        color: #aaa;
-        font-size: 1.1rem;
-        max-width: 700px;
-        margin: 0 auto 30px;
-      }
-
-      /* Minimal Launching Soon banner - EXACTLY like your image */
-      .launch-banner {
-        text-align: center;
+      /* YOUR EXACT ORIGINAL CSS */
+      body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d0d; color: #fff; overflow: hidden; }
+      header { display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; background-color: #111; }
+      .logo { display: flex; align-items: center; font-size: 1.4rem; font-weight: bold; }
+      .logo img { height: 32px; margin-right: 10px; }
+      nav a { color: #ccc; margin-left: 30px; text-decoration: none; transition: color 0.3s; }
+      nav a:hover { color: #fff; }
+      .btn-enter { background-color: #2563eb; color: white; padding: 10px 20px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background-color 0.3s ease; }
+      .btn-enter:hover { background-color: #1d4ed8; }
+      .grid-bg { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 40px 40px; z-index: 0; }
+      .content { position: relative; z-index: 1; text-align: center; margin-top: 120px; }
+      .content h1 { font-size: 3rem; margin-bottom: 20px; }
+      .content p { color: #aaa; font-size: 1.1rem; max-width: 700px; margin: 0 auto 30px; }
+      
+      /* TYPEWRITER ANIMATION */
+      .launch-banner { 
+        text-align: center; 
         color: #fff;
         font-family: monospace;
         font-size: 1rem;
-        letter-spacing: 0;
-        margin: 20px 0 0 0;
-        padding: 0;
-        position: relative;
-        z-index: 2;
+        height: 1rem; /* Prevents layout shift */
+        margin: 20px 0;
+      }
+      
+      /* DYNAMIC AUTH BUTTON */
+      .account-name {
+        margin-left: 30px;
+        color: white;
+        font-weight: 500;
       }
     </style>
   </head>
@@ -116,45 +48,56 @@
         <a href="#how">How It Works</a>
         <a href="#sensors">Sensors</a>
         <a href="#about">About</a>
-        <button class="btn-enter" onclick="goToLogin()">Enter System</button>
+        <span id="auth-button"></span>
       </nav>
     </header>
 
-    <!-- EXACT Launching Soon text from your image -->
-    <div class="launch-banner"># Launching Soon</div>
+    <!-- ANIMATED BANNER -->
+    <div class="launch-banner" id="typewriter-container"></div>
 
     <div class="content">
       <h1>Welcome to AxGuard</h1>
-      <p>Smart IoT-Based Rainwater Harvesting & Quality Monitoring System. Monitor water usage, quality, and levels in real-time.</p>
+      <p>Smart IoT-Based Rainwater Harvesting & Quality Monitoring System.</p>
       <button class="btn-enter" onclick="goToLogin()">Enter Dashboard</button>
     </div>
 
     <script>
+      // 1. YOUR ORIGINAL LOGIN FUNCTION
       function goToLogin() {
-        // Check if already logged in from localStorage/session or JWT cookie
         const token = localStorage.getItem("user-token");
-        if (token) {
-          window.location.href = "/dashboard.html";
-        } else {
-          window.location.href = "/login.html";
-        }
+        window.location.href = token ? "/dashboard.html" : "/login.html";
       }
 
-      // Simple typewriter effect for the banner
-      document.addEventListener('DOMContentLoaded', function() {
-        const banner = document.querySelector('.launch-banner');
-        const text = banner.textContent;
-        banner.textContent = '';
-        
+      // 2. TYPEWRITER ANIMATION (SIMPLE)
+      function typeWriter() {
+        const text = "# Launching Soon";
+        const element = document.getElementById("typewriter-container");
         let i = 0;
-        const typing = setInterval(() => {
+        
+        function type() {
           if (i < text.length) {
-            banner.textContent += text.charAt(i);
+            element.textContent += text.charAt(i);
             i++;
-          } else {
-            clearInterval(typing);
+            setTimeout(type, 100); // Speed in milliseconds
           }
-        }, 100);
+        }
+        type();
+      }
+
+      // 3. AUTH BUTTON SWITCHER
+      function updateAuthButton() {
+        const container = document.getElementById("auth-button");
+        const token = localStorage.getItem("user-token");
+        
+        container.innerHTML = token
+          ? `<span class="account-name">${localStorage.getItem("username") || "Account"}</span>`
+          : `<button class="btn-enter" onclick="goToLogin()">Login</button>`;
+      }
+
+      // INIT EVERYTHING
+      document.addEventListener('DOMContentLoaded', () => {
+        typeWriter();
+        updateAuthButton();
       });
     </script>
   </body>
