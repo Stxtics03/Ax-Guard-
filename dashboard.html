@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AxGuard Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f7f8fa; margin: 0; padding: 20px; }
+    .card { background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
+    h2 { margin-top: 0; }
+    canvas { max-width: 100%; }
+  </style>
+</head>
+<body>
+  <h1>📊 AxGuard Dashboard</h1>
+
+  <div class="card">
+    <h2>pH Level: <span id="phValue"></span> <small id="phStatus"></small></h2>
+    <canvas id="phChart" width="300"></canvas>
+  </div>
+
+  <div class="card">
+    <h2>TDS: <span id="tdsValue"></span> <small id="tdsStatus"></small></h2>
+    <canvas id="tdsChart" width="300"></canvas>
+  </div>
+
+  <div class="card">
+    <h2>Turbidity: <span id="turbValue"></span> <small id="turbStatus"></small></h2>
+    <canvas id="turbChart" width="300"></canvas>
+  </div>
+
+  <div class="card">
+    <h2>Temperature: <span id="tempValue"></span> <small id="tempStatus"></small></h2>
+    <canvas id="tempChart" width="300"></canvas>
+  </div>
+
+  <div class="card">
+    <h2>Tank Level: <span id="levelValue"></span> <small id="levelStatus"></small></h2>
+    <canvas id="levelChart" width="300"></canvas>
+  </div>
+
+  <script>
+    const fakeSensorData = {
+      ph: 6.8,
+      tds: 230,
+      turbidity: 15,
+      temperature: 26,
+      level: 76
+    };
+
+    function renderData(data) {
+      document.getElementById('phValue').innerText = data.ph.toFixed(1);
+      document.getElementById('phStatus').innerText =
+        data.ph >= 6.5 && data.ph <= 8.5 ? '✅ Safe' : '⚠️ Unsafe';
+
+      document.getElementById('tdsValue').innerText = data.tds + ' ppm';
+      document.getElementById('tdsStatus').innerText =
+        data.tds <= 500 ? '✅ Safe' : '⚠️ High';
+
+      document.getElementById('turbValue').innerText = data.turbidity + ' NTU';
+      document.getElementById('turbStatus').innerText =
+        data.turbidity <= 5 ? '✅ Clear' : '⚠️ Cloudy';
+
+      document.getElementById('tempValue').innerText = data.temperature + ' °C';
+      document.getElementById('tempStatus').innerText =
+        data.temperature <= 30 ? '✅ Normal' : '⚠️ Hot';
+
+      document.getElementById('levelValue').innerText = data.level + '%';
+      document.getElementById('levelStatus').innerText =
+        data.level >= 90 ? '⚠️ Overflow Risk' :
+        data.level <= 20 ? '⚠️ Low' : '✅ OK';
+
+      drawLineChart('phChart', 'pH Level', [7.2, data.ph], 'blue');
+      drawLineChart('tdsChart', 'TDS', [220, data.tds], 'green');
+      drawLineChart('turbChart', 'Turbidity', [10, data.turbidity], 'purple');
+      drawLineChart('tempChart', 'Temperature', [25, data.temperature], 'orange');
+      drawLineChart('levelChart', 'Tank Level (%)', [65, data.level], 'teal');
+    }
+
+    function drawLineChart(canvasId, label, dataPoints, color) {
+      const ctx = document.getElementById(canvasId).getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['1h ago', 'Now'],
+          datasets: [{
+            label: label,
+            data: dataPoints,
+            borderColor: color,
+            backgroundColor: color + '33',
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: { beginAtZero: false }
+          }
+        }
+      });
+    }
+
+    renderData(fakeSensorData);
+  </script>
+</body>
+</html>
