@@ -82,91 +82,10 @@
     <div class="content">
       <h1>Welcome to AxGuard</h1>
       <p>Smart IoT-Based Rainwater Harvesting & Quality Monitoring System.</p>
-      <button class="btn-enter" onclick="goToLogin()">Enter Dashboard</button>
+      <button class="btn-enter" onclick="goToDashboard()">Enter Dashboard</button>
     </div>
 
     <script>
-      // Check authentication status on page load
-      let isAuthenticated = false;
-      let currentUser = null;
-
-      // Function to check if user is logged in
-      async function checkAuthStatus() {
-        try {
-          // Check if there's a stored auth token
-          const token = localStorage.getItem("auth-token");
-          if (!token) {
-            isAuthenticated = false;
-            return false;
-          }
-
-          // Verify token with your backend/MongoDB
-          const response = await fetch('/api/verify-token', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            }
-          });
-
-          if (response.ok) {
-            const userData = await response.json();
-            isAuthenticated = true;
-            currentUser = userData.user;
-            return true;
-          } else {
-            // Token is invalid, remove it
-            localStorage.removeItem("auth-token");
-            localStorage.removeItem("username");
-            isAuthenticated = false;
-            return false;
-          }
-        } catch (error) {
-          console.error('Auth check failed:', error);
-          isAuthenticated = false;
-          return false;
-        }
-      }
-
-      // Main login/dashboard navigation function
-      async function goToLogin() {
-        await checkAuthStatus();
-        
-        if (isAuthenticated) {
-          // User is logged in, go to dashboard
-          window.location.href = "/dashboard.html";
-        } else {
-          // User is not logged in, go to login page
-          window.location.href = "/login.html";
-        }
-      }
-
-      // Logout function
-      async function logout() {
-        try {
-          const token = localStorage.getItem("auth-token");
-          
-          // Call logout endpoint if you have one
-          if (token) {
-            await fetch('/api/logout', {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${token}`
-              }
-            });
-          }
-        } catch (error) {
-          console.error('Logout error:', error);
-        } finally {
-          // Clear all stored auth data
-          localStorage.removeItem("auth-token");
-          localStorage.removeItem("username");
-          isAuthenticated = false;
-          currentUser = null;
-          updateAuthButton();
-        }
-      }
-
       // TYPEWRITER ANIMATION
       function typeWriter() {
         const text = "# Launching Soon";
@@ -183,34 +102,26 @@
         type();
       }
 
-      // AUTH BUTTON SWITCHER
-      async function updateAuthButton() {
+      // TEMPORARY: Directly go to dashboard without auth check
+      function goToDashboard() {
+        window.location.href = "dashboard.html";
+      }
+
+      // Update auth button to show dashboard link
+      function updateAuthButton() {
         const container = document.getElementById("auth-button");
-        await checkAuthStatus();
-        
-        if (isAuthenticated && currentUser) {
-          container.innerHTML = `
-            <span class="account-name" onclick="goToLogin()" title="Go to Dashboard">
-              ${currentUser.username || currentUser.name || "Account"}
-            </span>
-            <button class="logout-btn" onclick="logout()">Logout</button>
-          `;
-        } else {
-          container.innerHTML = `<button class="btn-enter" onclick="goToLogin()">Login</button>`;
-        }
+        container.innerHTML = `<button class="btn-enter" onclick="goToDashboard()">Dashboard</button>`;
       }
 
       // INITIALIZE EVERYTHING
-      document.addEventListener('DOMContentLoaded', async () => {
+      document.addEventListener('DOMContentLoaded', () => {
         typeWriter();
-        await updateAuthButton();
+        updateAuthButton();
       });
 
-      // Optional: Add about section functionality
+      // About section functionality
       document.querySelector('a[href="#about"]').addEventListener('click', (e) => {
         e.preventDefault();
-        // You can either scroll to an about section or open a modal
-        // For now, let's just show an alert - replace with your preferred method
         alert('About AxGuard: Smart IoT-Based Rainwater Harvesting & Quality Monitoring System designed to optimize water collection and ensure water quality through advanced sensor technology.');
       });
     </script>
