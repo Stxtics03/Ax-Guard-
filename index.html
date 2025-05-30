@@ -10,7 +10,8 @@
       header { display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; background-color: #111; }
       .logo { display: flex; align-items: center; font-size: 1.4rem; font-weight: bold; }
       .logo img { height: 32px; margin-right: 10px; }
-      nav a { color: #ccc; margin-left: 30px; text-decoration: none; transition: color 0.3s; }
+      nav { display: flex; align-items: center; }
+      nav a { color: #ccc; margin-right: 40px; text-decoration: none; transition: color 0.3s; }
       nav a:hover { color: #fff; }
       .btn-enter { background-color: #2563eb; color: white; padding: 10px 20px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background-color 0.3s ease; }
       .btn-enter:hover { background-color: #1d4ed8; }
@@ -34,6 +35,31 @@
         margin-left: 30px;
         color: white;
         font-weight: 500;
+        cursor: pointer;
+        padding: 10px 15px;
+        border-radius: 6px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .account-name:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      .logout-btn {
+        background-color: #dc2626;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-left: 10px;
+        font-size: 0.9rem;
+      }
+      
+      .logout-btn:hover {
+        background-color: #b91c1c;
       }
     </style>
   </head>
@@ -45,8 +71,6 @@
         AxGuard
       </div>
       <nav>
-        <a href="#how">How It Works</a>
-        <a href="#sensors">Sensors</a>
         <a href="#about">About</a>
         <span id="auth-button"></span>
       </nav>
@@ -62,13 +86,88 @@
     </div>
 
     <script>
-      // 1. YOUR ORIGINAL LOGIN FUNCTION
-      function goToLogin() {
-        const token = localStorage.getItem("user-token");
-        window.location.href = token ? "/dashboard.html" : "/login.html";
+      // Check authentication status on page load
+      let isAuthenticated = false;
+      let currentUser = null;
+
+      // Function to check if user is logged in
+      async function checkAuthStatus() {
+        try {
+          // Check if there's a stored auth token
+          const token = localStorage.getItem("auth-token");
+          if (!token) {
+            isAuthenticated = false;
+            return false;
+          }
+
+          // Verify token with your backend/MongoDB
+          const response = await fetch('/api/verify-token', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          });
+
+          if (response.ok) {
+            const userData = await response.json();
+            isAuthenticated = true;
+            currentUser = userData.user;
+            return true;
+          } else {
+            // Token is invalid, remove it
+            localStorage.removeItem("auth-token");
+            localStorage.removeItem("username");
+            isAuthenticated = false;
+            return false;
+          }
+        } catch (error) {
+          console.error('Auth check failed:', error);
+          isAuthenticated = false;
+          return false;
+        }
       }
 
-      // 2. TYPEWRITER ANIMATION (SIMPLE)
+      // Main login/dashboard navigation function
+      async function goToLogin() {
+        await checkAuthStatus();
+        
+        if (isAuthenticated) {
+          // User is logged in, go to dashboard
+          window.location.href = "/dashboard.html";
+        } else {
+          // User is not logged in, go to login page
+          window.location.href = "/login.html";
+        }
+      }
+
+      // Logout function
+      async function logout() {
+        try {
+          const token = localStorage.getItem("auth-token");
+          
+          // Call logout endpoint if you have one
+          if (token) {
+            await fetch('/api/logout', {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
+          }
+        } catch (error) {
+          console.error('Logout error:', error);
+        } finally {
+          // Clear all stored auth data
+          localStorage.removeItem("auth-token");
+          localStorage.removeItem("username");
+          isAuthenticated = false;
+          currentUser = null;
+          updateAuthButton();
+        }
+      }
+
+      // TYPEWRITER ANIMATION
       function typeWriter() {
         const text = "# Launching Soon";
         const element = document.getElementById("typewriter-container");
@@ -78,26 +177,41 @@
           if (i < text.length) {
             element.textContent += text.charAt(i);
             i++;
-            setTimeout(type, 100); // Speed in milliseconds
+            setTimeout(type, 100);
           }
         }
         type();
       }
 
-      // 3. AUTH BUTTON SWITCHER
-      function updateAuthButton() {
+      // AUTH BUTTON SWITCHER
+      async function updateAuthButton() {
         const container = document.getElementById("auth-button");
-        const token = localStorage.getItem("user-token");
+        await checkAuthStatus();
         
-        container.innerHTML = token
-          ? `<span class="account-name">${localStorage.getItem("username") || "Account"}</span>`
-          : `<button class="btn-enter" onclick="goToLogin()">Login</button>`;
+        if (isAuthenticated && currentUser) {
+          container.innerHTML = `
+            <span class="account-name" onclick="goToLogin()" title="Go to Dashboard">
+              ${currentUser.username || currentUser.name || "Account"}
+            </span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+          `;
+        } else {
+          container.innerHTML = `<button class="btn-enter" onclick="goToLogin()">Login</button>`;
+        }
       }
 
-      // INIT EVERYTHING
-      document.addEventListener('DOMContentLoaded', () => {
+      // INITIALIZE EVERYTHING
+      document.addEventListener('DOMContentLoaded', async () => {
         typeWriter();
-        updateAuthButton();
+        await updateAuthButton();
+      });
+
+      // Optional: Add about section functionality
+      document.querySelector('a[href="#about"]').addEventListener('click', (e) => {
+        e.preventDefault();
+        // You can either scroll to an about section or open a modal
+        // For now, let's just show an alert - replace with your preferred method
+        alert('About AxGuard: Smart IoT-Based Rainwater Harvesting & Quality Monitoring System designed to optimize water collection and ensure water quality through advanced sensor technology.');
       });
     </script>
   </body>
