@@ -5,61 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AxGuard - Smart Water System</title>
     <style>
-      /* YOUR EXACT ORIGINAL CSS */
-      body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d0d; color: #fff; overflow: hidden; }
-      header { display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; background-color: #111; }
-      .logo { display: flex; align-items: center; font-size: 1.4rem; font-weight: bold; }
-      .logo img { height: 32px; margin-right: 10px; }
-      nav { display: flex; align-items: center; }
-      nav a { color: #ccc; margin-right: 40px; text-decoration: none; transition: color 0.3s; }
-      nav a:hover { color: #fff; }
-      .btn-enter { background-color: #2563eb; color: white; padding: 10px 20px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background-color 0.3s ease; }
-      .btn-enter:hover { background-color: #1d4ed8; }
-      .grid-bg { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 40px 40px; z-index: 0; }
-      .content { position: relative; z-index: 1; text-align: center; margin-top: 120px; }
-      .content h1 { font-size: 3rem; margin-bottom: 20px; }
-      .content p { color: #aaa; font-size: 1.1rem; max-width: 700px; margin: 0 auto 30px; }
-      
-      /* TYPEWRITER ANIMATION */
-      .launch-banner { 
-        text-align: center; 
+      body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #0d0d0d;
         color: #fff;
-        font-family: monospace;
-        font-size: 1rem;
-        height: 1rem; /* Prevents layout shift */
-        margin: 20px 0;
+        overflow: hidden;
       }
-      
-      /* DYNAMIC AUTH BUTTON */
-      .account-name {
-        margin-left: 30px;
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 40px;
+        background-color: #111;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        font-size: 1.4rem;
+        font-weight: bold;
+      }
+      .logo img {
+        height: 32px;
+        margin-right: 10px;
+      }
+      nav {
+        display: flex;
+        align-items: center;
+      }
+      nav a {
+        color: #ccc;
+        margin-right: 40px;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+      nav a:hover {
+        color: #fff;
+      }
+      .btn-enter {
+        background-color: #2563eb;
         color: white;
-        font-weight: 500;
-        cursor: pointer;
-        padding: 10px 15px;
-        border-radius: 6px;
-        transition: background-color 0.3s ease;
-      }
-      
-      .account-name:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-      }
-      
-      .logout-btn {
-        background-color: #dc2626;
-        color: white;
-        padding: 8px 16px;
+        padding: 10px 20px;
         border: none;
         border-radius: 6px;
         font-weight: 600;
         cursor: pointer;
         transition: background-color 0.3s ease;
-        margin-left: 10px;
-        font-size: 0.9rem;
       }
-      
-      .logout-btn:hover {
-        background-color: #b91c1c;
+      .btn-enter:hover {
+        background-color: #1d4ed8;
+      }
+      .grid-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+        background-size: 40px 40px;
+        z-index: 0;
+      }
+      .content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        margin-top: 120px;
+      }
+      .content h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+      }
+      .content p {
+        color: #aaa;
+        font-size: 1.1rem;
+        max-width: 700px;
+        margin: 0 auto 30px;
+      }
+      .launch-banner {
+        text-align: center;
+        color: #fff;
+        font-family: monospace;
+        font-size: 1rem;
+        height: 1rem;
+        margin: 20px 0;
       }
     </style>
   </head>
@@ -72,7 +101,7 @@
       </div>
       <nav>
         <a href="#about">About</a>
-        <span id="auth-button"></span>
+        <button class="btn-enter" onclick="goToAuth()">Login / Sign Up</button>
       </nav>
     </header>
 
@@ -86,12 +115,12 @@
     </div>
 
     <script>
-      // TYPEWRITER ANIMATION
+      // Typewriter effect
       function typeWriter() {
         const text = "# Launching Soon";
         const element = document.getElementById("typewriter-container");
         let i = 0;
-        
+
         function type() {
           if (i < text.length) {
             element.textContent += text.charAt(i);
@@ -102,27 +131,29 @@
         type();
       }
 
-      // TEMPORARY: Directly go to dashboard without auth check
+      // Go to login/signup page
+      function goToAuth() {
+        window.location.href = "signup.html";
+      }
+
+      // Go to dashboard or redirect to signup if not logged in
       function goToDashboard() {
-        window.location.href = "dashboard.html";
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        if (isLoggedIn === "true") {
+          window.location.href = "dashboard.html";
+        } else {
+          window.location.href = "signup.html";
+        }
       }
 
-      // Update auth button to show dashboard link
-      function updateAuthButton() {
-        const container = document.getElementById("auth-button");
-        container.innerHTML = `<button class="btn-enter" onclick="goToDashboard()">Dashboard</button>`;
-      }
-
-      // INITIALIZE EVERYTHING
-      document.addEventListener('DOMContentLoaded', () => {
+      document.addEventListener("DOMContentLoaded", () => {
         typeWriter();
-        updateAuthButton();
       });
 
-      // About section functionality
-      document.querySelector('a[href="#about"]').addEventListener('click', (e) => {
+      // About link functionality
+      document.querySelector('a[href="#about"]').addEventListener("click", (e) => {
         e.preventDefault();
-        alert('About AxGuard: Smart IoT-Based Rainwater Harvesting & Quality Monitoring System designed to optimize water collection and ensure water quality through advanced sensor technology.');
+        alert("About AxGuard: Smart IoT-Based Rainwater Harvesting & Quality Monitoring System designed to optimize water collection and ensure water quality through advanced sensor technology.");
       });
     </script>
   </body>
