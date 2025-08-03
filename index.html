@@ -19,15 +19,21 @@
         padding: 20px 40px;
         background-color: #111;
       }
-      .logo {
+      .logo-section {
         display: flex;
         align-items: center;
+        gap: 10px;
+      }
+      .logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .brand-name {
         font-size: 1.4rem;
         font-weight: bold;
-      }
-      .logo img {
-        height: 32px;
-        margin-right: 10px;
       }
       nav {
         display: flex;
@@ -95,10 +101,11 @@
   <body>
     <div class="grid-bg"></div>
     <header>
-      <div class="logo">
-        <img src="/logo.png" alt="AxGuard Logo" />
-        AxGuard
+      <div class="logo-section">
+        <div class="logo">AX</div>
+        <span class="brand-name">AxGuard</span>
       </div>
+
       <nav>
         <a href="#about">About</a>
         <button class="btn-enter" onclick="goToAuth()">Login / Sign Up</button>
