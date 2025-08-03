@@ -28,6 +28,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       padding: 1rem;
       transition: all 0.3s ease;
+      cursor: pointer;
     }
 
     body.dark-mode .card {
@@ -57,6 +58,7 @@
       align-items: center;
       justify-content: center;
       backdrop-filter: blur(4px);
+      z-index: 1000;
     }
 
     .modal-content {
@@ -155,9 +157,319 @@
     body.dark-mode .main-title {
       color: #f9fafb;
     }
+
+    /* User Account Styles */
+    .user-account {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 8px 16px;
+      border-radius: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      z-index: 999;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    body.dark-mode .user-account {
+      background: rgba(31, 41, 55, 0.9);
+      color: #f9fafb;
+      border: 1px solid rgba(75, 85, 99, 0.3);
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+
+    .user-role {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    /* User Dropdown Menu */
+    .user-dropdown {
+      position: absolute;
+      top: 60px;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 8px 0;
+      width: 200px;
+      z-index: 1000;
+      display: none;
+    }
+
+    body.dark-mode .user-dropdown {
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid rgba(75, 85, 99, 0.3);
+    }
+
+    .user-dropdown a {
+      display: block;
+      padding: 8px 16px;
+      color: inherit;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .user-dropdown a:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark-mode .user-dropdown a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Notification Styles */
+    .notification {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      max-width: 320px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      z-index: 998;
+      animation: slideIn 0.5s ease-out;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: none;
+    }
+
+    .notification:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .notification-close {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+
+    .notification-close:hover {
+      opacity: 1;
+    }
+
+    .notification-content {
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* Connection status - made smaller */
+    #connectionStatus {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      background: rgba(34, 197, 94, 0.9);
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #connectionStatus.connected {
+      background: rgba(34, 197, 94, 0.9);
+    }
+
+    #connectionStatus.disconnected {
+      background: rgba(239, 68, 68, 0.9);
+    }
+
+    /* Status indicator dot */
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .connected .status-dot {
+      background: white;
+    }
+
+    .disconnected .status-dot {
+      background: white;
+    }
+
+    /* Notification Toggle Styles */
+    .notification-preference {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px;
+    }
+
+    .small-toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 20px;
+    }
+
+    .small-toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .small-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 20px;
+    }
+
+    .small-slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .small-slider {
+      background-color: #2563eb;
+    }
+
+    input:checked + .small-slider:before {
+      transform: translateX(20px);
+    }
+
+    /* Rainwater Button Styles */
+    .rainwater-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: linear-gradient(135deg, #0ea5e9, #0369a1);
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .rainwater-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+    }
   </style>
 </head>
 <body>
+  <!-- Connection Status (smaller version) -->
+  <div id="connectionStatus" class="connected">
+    <span class="status-dot"></span>
+    <span>Connected</span>
+  </div>
+
+  <!-- User Account Section (now interactive) -->
+  <div class="user-account" id="userAccount">
+    <div class="user-avatar">AX</div>
+    <div class="user-info">
+      <div class="user-name">AxGuard User</div>
+      <div class="user-role">Admin</div>
+    </div>
+    
+    <!-- Updated Dropdown Menu -->
+    <div class="user-dropdown" id="userDropdown">
+      <a href="index.html">Home Page</a>
+      <div class="notification-preference">
+        <span>Notifications</span>
+        <label class="small-toggle-switch">
+          <input type="checkbox" id="notificationToggle" checked>
+          <span class="small-slider"></span>
+        </label>
+      </div>
+      <a href="#">System Logs</a>
+      <hr class="my-1 border-gray-200 dark:border-gray-600">
+      <a href="login.html">Log Out</a>
+    </div>
+  </div>
+
+  <!-- Water Conservation Notification -->
+  <div class="notification" id="waterNotification">
+    <button class="notification-close" onclick="closeNotification()">&times;</button>
+    <div class="notification-content">
+      🌧️ <strong>Did you know?</strong> Just 1 inch of rain on a 1,000 sq.ft roof can collect over 2,800 liters of water! Check your data RIGHT NOW!
+    </div>
+  </div>
+
+  <!-- Rain Harvesting Info Button -->
+  <button class="rainwater-btn" onclick="window.location.href='rainwater.html'">
+    🌧️ Rain Harvesting Info
+  </button>
+
   <div class="container mx-auto p-4">
     <h1 class="main-title text-3xl font-bold mb-6 text-center">AxGuard - IoT Water Monitoring Dashboard</h1>
     
@@ -177,11 +489,11 @@
         <p id="phStatus">Loading...</p>
         <canvas id="phChart"></canvas>
       </div>
-      <div class="card" onclick="openModal('tds')">
-        <h2 class="text-xl font-semibold">TDS</h2>
-        <p id="tdsValue" class="text-2xl">--</p>
-        <p id="tdsStatus">Loading...</p>
-        <canvas id="tdsChart"></canvas>
+      <div class="card" onclick="openModal('solid')">
+        <h2 class="text-xl font-semibold">Solid Detector</h2>
+        <p id="solidValue" class="text-2xl">--</p>
+        <p id="solidStatus">Loading...</p>
+        <canvas id="solidChart"></canvas>
       </div>
       <div class="card" onclick="openModal('turbidity')">
         <h2 class="text-xl font-semibold">Turbidity</h2>
@@ -245,61 +557,106 @@
       }, 100);
     });
 
-    // Arduino IP address - Update this with your Arduino's IP
-    const ARDUINO_IP = 'http://192.168.1.100';  // Change to your Arduino's IP
+    // User account dropdown functionality
+    const userAccount = document.getElementById('userAccount');
+    const userDropdown = document.getElementById('userDropdown');
 
-    async function fetchSensorData() {
+    userAccount.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const isDisplayed = userDropdown.style.display === 'block';
+      userDropdown.style.display = isDisplayed ? 'none' : 'block';
+    });
+
+    // Close dropdown when clicking elsewhere
+    document.addEventListener('click', function() {
+      userDropdown.style.display = 'none';
+    });
+
+    // Notification toggle functionality
+    const notificationToggle = document.getElementById('notificationToggle');
+    notificationToggle.addEventListener('change', function() {
+      if(this.checked) {
+        console.log("Notifications enabled");
+        localStorage.setItem('notificationPref', 'true');
+      } else {
+        console.log("Notifications disabled");
+        localStorage.setItem('notificationPref', 'false');
+      }
+    });
+
+    // Load saved notification preference
+    const notificationPref = localStorage.getItem('notificationPref');
+    if(notificationPref === 'false') {
+      notificationToggle.checked = false;
+    }
+
+    // Notification functionality
+    function showNotification() {
+      const notification = document.getElementById('waterNotification');
+      notification.style.display = 'block';
+      
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 5000);
+    }
+
+    function closeNotification() {
+      document.getElementById('waterNotification').style.display = 'none';
+    }
+
+    // Show notification every 10 seconds
+    setInterval(showNotification, 10000);
+    // Show first notification after 2 seconds
+    setTimeout(showNotification, 2000);
+
+    // Fetch data using REST API (matching your server.js)
+    async function fetchData() {
       try {
-        const response = await fetch(`${ARDUINO_IP}/data`);
+        const response = await fetch('/api/sensor/latest');
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         const data = await response.json();
-        currentData = data;
-        renderData(currentData);
+        console.log("✅ Latest data:", data);
         
-        // Update connection status
         updateConnectionStatus(true);
         
-      } catch (err) {
-        console.error("Error fetching sensor data:", err);
-        updateConnectionStatus(false);
+        if (Object.keys(data).length === 0) {
+          console.log("⚠️ No data available");
+          showConnectionError();
+          return;
+        }
+
+        // Map your database fields to the expected format
+        currentData = {
+          ph: data.pH,
+          solid_detected: data.solid_detected,
+          turbidity: data.turbidity,
+          temperature: data.temperature,
+          tank_level: data.tank_level
+        };
         
-        // Show error message to user
+        renderData(currentData);
+        
+      } catch (error) {
+        console.error("❌ Error fetching data:", error);
+        updateConnectionStatus(false);
         showConnectionError();
       }
     }
 
     function updateConnectionStatus(connected) {
-      // Add connection indicator if it doesn't exist
-      let indicator = document.getElementById('connectionStatus');
-      if (!indicator) {
-        indicator = document.createElement('div');
-        indicator.id = 'connectionStatus';
-        indicator.style.cssText = `
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          padding: 8px 16px;
-          border-radius: 20px;
-          font-size: 14px;
-          font-weight: 500;
-          z-index: 1000;
-          transition: all 0.3s ease;
-        `;
-        document.body.appendChild(indicator);
-      }
+      const indicator = document.getElementById('connectionStatus');
       
       if (connected) {
-        indicator.textContent = '🟢 Connected';
-        indicator.style.background = 'rgba(34, 197, 94, 0.9)';
-        indicator.style.color = 'white';
+        indicator.textContent = 'Connected';
+        indicator.className = 'connected';
       } else {
-        indicator.textContent = '🔴 Disconnected';
-        indicator.style.background = 'rgba(239, 68, 68, 0.9)';
-        indicator.style.color = 'white';
+        indicator.textContent = 'Disconnected';
+        indicator.className = 'disconnected';
       }
     }
 
@@ -307,8 +664,8 @@
       // Display all sensors as disconnected
       document.getElementById('phValue').innerText = '--';
       document.getElementById('phStatus').innerText = '❌ No Data';
-      document.getElementById('tdsValue').innerText = '--';
-      document.getElementById('tdsStatus').innerText = '❌ No Data';
+      document.getElementById('solidValue').innerText = '--';
+      document.getElementById('solidStatus').innerText = '❌ No Data';
       document.getElementById('turbValue').innerText = '--';
       document.getElementById('turbStatus').innerText = '❌ No Data';
       document.getElementById('tempValue').innerText = '--';
@@ -318,37 +675,42 @@
     }
 
     function renderData(data) {
-      document.getElementById('phValue').innerText = data.ph?.toFixed(1) || '--';
+      // pH Level
+      document.getElementById('phValue').innerText = data.ph?.toFixed(2) || '--';
       document.getElementById('phStatus').innerText =
         data.ph >= 6.5 && data.ph <= 8.5 ? '✅ Safe' : '⚠️ Unsafe';
 
-      document.getElementById('tdsValue').innerText = (data.tds?.toFixed(0) || '--') + ' ppm';
-      document.getElementById('tdsStatus').innerText =
-        data.tds <= 500 ? '✅ Safe' : '⚠️ High';
+      // Solid Detector
+      document.getElementById('solidValue').innerText = data.solid_detected ? 'Detected' : 'Clear';
+      document.getElementById('solidStatus').innerText = data.solid_detected ? '⚠️ Object Found' : '✅ Clear Path';
 
+      // Turbidity
       document.getElementById('turbValue').innerText = (data.turbidity?.toFixed(1) || '--') + ' NTU';
       document.getElementById('turbStatus').innerText =
         data.turbidity <= 5 ? '✅ Clear' : '⚠️ Cloudy';
 
+      // Temperature
       document.getElementById('tempValue').innerText = (data.temperature?.toFixed(1) || '--') + ' °C';
       document.getElementById('tempStatus').innerText =
         data.temperature <= 30 ? '✅ Normal' : '⚠️ Hot';
 
-      document.getElementById('levelValue').innerText = (data.level?.toFixed(0) || '--') + '%';
+      // Tank Level
+      document.getElementById('levelValue').innerText = (data.tank_level?.toFixed(0) || '--') + '%';
       document.getElementById('levelStatus').innerText =
-        data.level >= 90 ? '⚠️ Overflow Risk' :
-        data.level <= 20 ? '⚠️ Low' : '✅ OK';
+        data.tank_level >= 90 ? '⚠️ Overflow Risk' :
+        data.tank_level <= 20 ? '⚠️ Low' : '✅ OK';
 
       // Get theme-appropriate colors
       const isDarkMode = body.classList.contains('dark-mode');
       const textColor = isDarkMode ? '#f9fafb' : '#1f2937';
       const gridColor = isDarkMode ? '#374151' : '#e5e7eb';
 
+      // Update charts with historical simulation
       updateChart('phChart', 'pH Level', [7.2, data.ph], 'rgba(0, 123, 255, 0.8)', 'rgba(0, 123, 255, 0.2)', textColor, gridColor);
-      updateChart('tdsChart', 'TDS', [220, data.tds], 'rgba(40, 167, 69, 0.8)', 'rgba(40, 167, 69, 0.2)', textColor, gridColor);
+      updateChart('solidChart', 'Solid Detection', [0, data.solid_detected ? 1 : 0], 'rgba(40, 167, 69, 0.8)', 'rgba(40, 167, 69, 0.2)', textColor, gridColor);
       updateChart('turbChart', 'Turbidity', [3, data.turbidity], 'rgba(102, 16, 242, 0.8)', 'rgba(102, 16, 242, 0.2)', textColor, gridColor);
       updateChart('tempChart', 'Temperature', [25, data.temperature], 'rgba(255, 159, 64, 0.8)', 'rgba(255, 159, 64, 0.2)', textColor, gridColor);
-      updateChart('levelChart', 'Tank Level (%)', [65, data.level], 'rgba(0, 128, 128, 0.8)', 'rgba(0, 128, 128, 0.2)', textColor, gridColor);
+      updateChart('levelChart', 'Tank Level (%)', [65, data.tank_level], 'rgba(0, 128, 128, 0.8)', 'rgba(0, 128, 128, 0.2)', textColor, gridColor);
     }
 
     function updateChart(canvasId, label, dataPoints, borderColor, fillColor, textColor, gridColor) {
@@ -395,16 +757,16 @@
       const body = document.getElementById('modalBody');
 
       const valueMap = {
-        ph: currentData.ph?.toFixed(1),
-        tds: currentData.tds?.toFixed(0) + ' ppm',
+        ph: currentData.ph?.toFixed(2),
+        solid: currentData.solid_detected ? 'Detected' : 'Clear',
         turbidity: currentData.turbidity?.toFixed(1) + ' NTU',
         temperature: currentData.temperature?.toFixed(1) + ' °C',
-        level: currentData.level?.toFixed(0) + '%'
+        level: currentData.tank_level?.toFixed(0) + '%'
       };
 
       const statusMap = {
         ph: document.getElementById('phStatus').innerText,
-        tds: document.getElementById('tdsStatus').innerText,
+        solid: document.getElementById('solidStatus').innerText,
         turbidity: document.getElementById('turbStatus').innerText,
         temperature: document.getElementById('tempStatus').innerText,
         level: document.getElementById('levelStatus').innerText
@@ -416,10 +778,10 @@
           body: `The pH level indicates how acidic or basic the water is. It's crucial for water safety and taste.`,
           limit: "Safe range: 6.5 - 8.5"
         },
-        tds: {
-          title: "Total Dissolved Solids (TDS) Details",
-          body: "TDS indicates the concentration of dissolved solids in water, affecting taste and quality.",
-          limit: "Safe limit: ≤ 500 ppm"
+        solid: {
+          title: "Solid Detector Details",
+          body: "The solid detector identifies any solid objects or debris in the water system that could affect water quality.",
+          limit: "Status: Clear path preferred"
         },
         turbidity: {
           title: "Turbidity Details",
@@ -460,9 +822,11 @@
       }
     });
 
-    // Initialize dashboard
-    setInterval(fetchSensorData, 3000);
-    fetchSensorData();
+    // Start fetching data every 3 seconds
+    setInterval(fetchData, 3000);
+    
+    // Initial fetch
+    fetchData();
   </script>
 </body>
 </html>
